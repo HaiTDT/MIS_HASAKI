@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import { api, type Product } from "../lib/api";
+import { useCart } from "./CartProvider";
 
 export function ProductCard({ product }: { product: Product }) {
   const [message, setMessage] = useState("");
+  const { refreshCart } = useCart();
 
   const addToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -13,6 +15,7 @@ export function ProductCard({ product }: { product: Product }) {
     try {
       await api.addCartItem({ productId: product.id, quantity: 1 });
       setMessage("Đã thêm vào giỏ hàng");
+      refreshCart();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Không thể thêm vào giỏ hàng");
     }

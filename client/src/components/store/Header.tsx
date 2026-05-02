@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "../AuthProvider";
+import { useCart } from "../CartProvider";
 import { CATEGORY_GROUPS } from "../../lib/constants";
 
 export function Header() {
@@ -10,6 +11,7 @@ export function Header() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { user, logout } = useAuth();
+  const { totalItems } = useCart();
 
   const activeGroup = searchParams.get("group");
   const isHome = pathname === "/" && !activeGroup;
@@ -30,9 +32,22 @@ export function Header() {
           <div className="flex items-center gap-6">
             <span className="hidden lg:block text-emerald-900 dark:text-emerald-400 font-medium text-sm">Hotline: 1900 1234</span>
             <div className="flex items-center gap-4">
+              {user && (
+                <button 
+                  onClick={() => router.push("/orders")} 
+                  className="p-2 text-emerald-900 hover:bg-stone-50 transition-all rounded-full relative"
+                  title="Lịch sử đơn hàng"
+                >
+                  <span className="material-symbols-outlined">receipt_long</span>
+                </button>
+              )}
               <button onClick={() => router.push("/cart")} className="p-2 text-emerald-900 hover:bg-stone-50 transition-all rounded-full relative">
                 <span className="material-symbols-outlined">shopping_cart</span>
-                <span className="absolute top-0 right-0 bg-secondary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">3</span>
+                {totalItems > 0 && (
+                  <span className="absolute top-0 right-0 bg-secondary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                    {totalItems}
+                  </span>
+                )}
               </button>
               {user?.role === "ADMIN" && (
                 <Link
