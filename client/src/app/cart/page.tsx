@@ -6,28 +6,15 @@ import { CartItem } from "../../components/CartItem";
 import { Protected } from "../../components/Protected";
 import { EmptyState, ErrorMessage } from "../../components/ui";
 import { api, formatPrice, type Cart } from "../../lib/api";
+import { useCart } from "../../components/CartProvider";
 
 function CartContent() {
-  const [cart, setCart] = useState<Cart | null>(null);
+  const { cart, loading, setCart, refreshCart } = useCart();
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  const load = async () => {
-    setError("");
-    setLoading(true);
-
-    try {
-      setCart(await api.getCart());
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Cannot load cart");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
-    load();
-  }, []);
+    refreshCart();
+  }, [refreshCart]);
 
   const updateQuantity = async (itemId: string, quantity: number) => {
     try {

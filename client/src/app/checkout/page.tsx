@@ -5,9 +5,10 @@ import { FormEvent, useEffect, useState } from "react";
 import { Protected } from "../../components/Protected";
 import { ErrorMessage } from "../../components/ui";
 import { api, formatPrice, type Cart } from "../../lib/api";
+import { useCart } from "../../components/CartProvider";
 
 function CheckoutContent() {
-  const [cart, setCart] = useState<Cart | null>(null);
+  const { cart, setCart, refreshCart } = useCart();
   const [form, setForm] = useState({
     shippingName: "",
     shippingPhone: "",
@@ -18,10 +19,8 @@ function CheckoutContent() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    api.getCart().then(setCart).catch((err) => {
-      setError(err instanceof Error ? err.message : "Cannot load cart");
-    });
-  }, []);
+    refreshCart();
+  }, [refreshCart]);
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();

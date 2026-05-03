@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AppShell } from "../components/AppShell";
 import { AuthProvider } from "../components/AuthProvider";
+import { CartProvider } from "../components/CartProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -29,7 +30,9 @@ export default function RootLayout({
       <body>
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
           <AuthProvider>
-            <AppShell>{children}</AppShell>
+            <CartProvider>
+              <AppShell>{children}</AppShell>
+            </CartProvider>
           </AuthProvider>
         </GoogleOAuthProvider>
       </body>

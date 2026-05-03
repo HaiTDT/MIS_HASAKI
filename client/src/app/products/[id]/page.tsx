@@ -5,11 +5,13 @@ import { useParams } from "next/navigation";
 import { useAuth } from "../../../components/AuthProvider";
 import { ErrorMessage } from "../../../components/ui";
 import { api, type Product, type Review } from "../../../lib/api";
+import { useCart } from "../../../components/CartProvider";
 
 export default function ProductDetailPage() {
   const params = useParams<{ id: string }>();
   const productId = params.id;
   const { user } = useAuth();
+  const { refreshCart } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewMeta, setReviewMeta] = useState({ averageRating: 0, totalReviews: 0 });
@@ -45,6 +47,7 @@ export default function ProductDetailPage() {
     try {
       await api.addCartItem({ productId, quantity });
       setMessage("Đã thêm vào giỏ hàng");
+      refreshCart();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Không thể thêm vào giỏ hàng");
     }
