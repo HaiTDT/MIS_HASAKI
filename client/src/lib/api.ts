@@ -218,6 +218,13 @@ export const api = {
     });
   },
 
+  registerWithGoogle(body: { googleToken: string }) {
+    return apiRequest<{ user: User; token: string }>("/auth/register/google", {
+      method: "POST",
+      body
+    });
+  },
+
   getCategories() {
     return apiRequest<Category[]>("/api/categories");
   },

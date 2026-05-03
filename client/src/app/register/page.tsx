@@ -124,28 +124,6 @@ export default function RegisterPage() {
                 {!loading && <span className="material-symbols-outlined text-lg">arrow_forward</span>}
               </button>
             </form>
-            
-            <div className="relative my-8">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-surface-container-highest"></div>
-              </div>
-              <div className="relative flex justify-center text-xs uppercase tracking-widest font-bold">
-                <span className="bg-surface-container-lowest px-4 text-outline">Hoặc</span>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <button type="button" className="flex items-center justify-center gap-3 py-3 border border-outline-variant/30 rounded-lg bg-surface-container-lowest hover:bg-surface-container-low transition-colors group">
-                <img alt="Google Logo" className="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCML0Ltf_DxxiFIBfT4OVMl9ZEQLwROtTOJ8Svà_uIQFvàCeYOskHJcR0wU1owSJKF6BBLue7BFkEqLFxlJ3mlsizCbG051FbHCFJR4jpjalKb-JGXW3EDY9wJLIdUjJQmEjzNR-vàUS7_twUISsnF5V1sQXOWgYQtnJnDmYucN-5cahGUHZweRoTM7cdJHg5axrsbTquy_ojKY1QgISbFi6GElzlvàCS7RjvàYO67BVvàrwd8OtbmiJilg4BAs1_vàeNcyWCHd6sbmJUROOGd"/>
-                <span className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors">Google</span>
-              </button>
-              <button type="button" className="flex items-center justify-center gap-3 py-3 border border-outline-variant/30 rounded-lg bg-surface-container-lowest hover:bg-surface-container-low transition-colors group">
-                <svg className="w-5 h-5 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path>
-                </svg>
-                <span className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors">Facebook</span>
-              </button>
-            </div>
           </div>
           
           <div className="px-8 py-6 bg-surface-container-low text-center border-t border-surface-container-highest">

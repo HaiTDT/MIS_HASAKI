@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AppShell } from "../components/AppShell";
 import { AuthProvider } from "../components/AuthProvider";
 import "./globals.css";
@@ -26,9 +27,11 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <AuthProvider>
-          <AppShell>{children}</AppShell>
-        </AuthProvider>
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
+          <AuthProvider>
+            <AppShell>{children}</AppShell>
+          </AuthProvider>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

@@ -1,0 +1,124 @@
+========================================
+CHANGELOG - TÍNH NĂNG ĐĂNG KÝ VỚI GOOGLE
+========================================
+Ngày: 2026-05-03
+
+========== FRONTEND CHANGES ==========
+
+1. DEPENDENCIES (client/package.json) ✅
+   ✓ Thêm: @react-oauth/google (v0.12.1)
+
+2. FILE: client/src/app/layout.tsx ✅
+   ✓ Import GoogleOAuthProvider
+   ✓ Wrap AuthProvider với GoogleOAuthProvider
+   ✓ Set clientId = NEXT_PUBLIC_GOOGLE_CLIENT_ID
+
+3. FILE: client/src/app/register/page.tsx ✅
+   ✓ Import GoogleLogin component
+   ✓ Destructure registerWithGoogle từ useAuth
+   ✓ Thêm handler handleGoogleSuccess để xử lý Google token
+   ✓ Thay thế nút "Đăng ký với Google" bằng GoogleLogin component
+   ✓ Set text="signup_with", locale="vi_VN"
+
+4. FILE: client/src/lib/api.ts ✅
+   ✓ Thêm hàm api.registerWithGoogle(body: { googleToken: string })
+   ✓ Gọi POST /auth/register/google endpoint
+
+5. FILE: client/src/components/AuthProvider.tsx ✅
+   ✓ Thêm registerWithGoogle: (googleToken: string) => Promise<void> trong type AuthContextValue
+   ✓ Implement registerWithGoogle callback
+   ✓ Update value useMemo để include registerWithGoogle
+
+========== BACKEND CHANGES ==========
+
+6. DEPENDENCIES (server/package.json) ✅
+   ✓ Thêm: google-auth-library (v9.14.0)
+
+7. DATABASE SCHEMA (server/prisma/schema.prisma) ✅
+   ✓ Thêm field: googleId (String?, @unique) trong User model
+   ✓ MIGRATION PENDING: Cần chạy `npm run prisma:migrate` để update database
+
+8. FILE: server/src/services/auth.service.ts ✅
+   ✓ Import OAuth2Client từ google-auth-library
+   ✓ Thêm type RegisterWithGoogleInput
+   ✓ Thêm function getGoogleOAuthClient()
+   ✓ Thêm method authService.registerWithGoogle(input)
+   ✓ Verify Google ID token
+   ✓ Check user tồn tại bằng email hoặc googleId
+   ✓ Create user mới hoặc update user hiện tại
+   ✓ Return user + JWT token
+
+9. FILE: server/src/controllers/auth.controller.ts ✅
+   ✓ Import AuthError từ services
+   ✓ Thêm method authController.registerWithGoogle
+   ✓ Validate googleToken là bắt buộc
+   ✓ Return status 201 (Created)
+
+10. FILE: server/src/routes/auth.ts ✅
+    ✓ Thêm route: POST /auth/register/google
+
+========== ENVIRONMENT VARIABLES CẦN THIẾT ==========
+
+Frontend (.env.local): ✅
+  ✓ NEXT_PUBLIC_GOOGLE_CLIENT_ID=<your-google-client-id>
+
+Backend (.env): ✅
+  ✓ GOOGLE_CLIENT_ID=<your-google-client-id>
+
+File đã được tạo/cập nhật:
+  ✓ client/.env.local (new)
+  ✓ client/.env.example (updated)
+  ✓ server/.env (updated)
+  ✓ server/.env.example (updated)
+
+========== CÔNG VIỆC CẦN LÀM ==========
+
+- [ ] Cấu hình Google OAuth:
+  - [ ] Truy cập Google Cloud Console
+  - [ ] Tạo OAuth 2.0 credentials (Web application)
+  - [ ] Set Authorized JavaScript origins: http://localhost:3000
+  - [ ] Set Authorized redirect URIs: http://localhost:3000/register
+  - [ ] Copy Client ID
+
+- [ ] Update environment variables:
+  - [ ] client/.env.local: NEXT_PUBLIC_GOOGLE_CLIENT_ID
+  - [ ] server/.env: GOOGLE_CLIENT_ID
+
+- [ ] Install dependencies:
+  - [ ] cd client && npm install
+  - [ ] cd server && npm install
+
+- [ ] Chạy Prisma migration:
+  - [ ] cd server && npm run prisma:migrate
+
+- [ ] Test tính năng:
+  - [ ] Khởi động backend
+  - [ ] Khởi động frontend
+  - [ ] Test đăng ký với Google
+  - [ ] Verify user được tạo trong database với googleId
+
+========== GHI CHÚ IMPORTANT ==========
+
+1. GoogleLogin component sẽ:
+   - Hiển thị nút "Sign up with Google" (dịch sang Tiếng Việt)
+   - Khi click, mở Google login dialog
+   - Trả về credential token
+   - Gọi handleGoogleSuccess để send token lên server
+
+2. Backend sẽ:
+   - Verify token với Google OAuth2Client
+   - Lấy email và name từ Google payload
+   - Check xem user đã tồn tại chưa (qua email hoặc googleId)
+   - Tạo user mới hoặc update user hiện tại (thêm googleId nếu chưa có)
+   - Return user info + JWT token
+
+3. Password field:
+   - Khi đăng ký với Google, passwordHash sẽ được set thành empty string ""
+   - User không thể login bằng email + password (chỉ có thể dùng Google login)
+
+4. Xem xét thêm:
+   - Hàm loginWithGoogle (login bằng Google nếu user đã tồn tại)
+   - Linking Google account với existing email account
+
+========================================
+

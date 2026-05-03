@@ -20,6 +20,7 @@ type AuthContextValue = {
     fullName?: string;
     phone?: string;
   }) => Promise<void>;
+  registerWithGoogle: (googleToken: string) => Promise<void>;
   logout: () => void;
 };
 
@@ -82,14 +83,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [persistSession]
   );
 
+  const registerWithGoogle = useCallback(
+    async (googleToken: string) => {
+      const result = await api.registerWithGoogle({ googleToken });
+      persistSession(result.token, result.user);
+    },
+    [persistSession]
+  );
+
   const logout = useCallback(() => {
     tokenStore.clear();
     setUser(null);
   }, []);
 
   const value = useMemo(
-    () => ({ ready, user, login, register, logout }),
-    [ready, user, login, register, logout]
+    () => ({ ready, user, login, register, registerWithGoogle, logout }),
+    [ready, user, login, register, registerWithGoogle, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

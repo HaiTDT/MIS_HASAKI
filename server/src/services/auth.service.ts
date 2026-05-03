@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt, { type Secret, type SignOptions } from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
 import { prisma } from "../lib/prisma";
 
 const SALT_ROUNDS = 10;
@@ -32,6 +33,18 @@ type RegisterInput = {
 type LoginInput = {
   email: string;
   password: string;
+};
+
+type RegisterWithGoogleInput = {
+  googleToken: string;
+};
+
+const getGoogleOAuthClient = () => {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  if (!clientId) {
+    throw new AuthError("GOOGLE_CLIENT_ID is not configured", 500);
+  }
+  return new OAuth2Client(clientId);
 };
 
 export class AuthError extends Error {
@@ -125,6 +138,67 @@ export const authService = {
     }
 
     const { passwordHash: _passwordHash, ...user } = userWithPassword;
+
+    return {
+      user,
+      token: createToken(user)
+    };
+  },
+
+  async registerWithGoogle(input: RegisterWithGoogleInput): Promise<AuthResponse> {
+    const client = getGoogleOAuthClient();
+    
+    let payload;
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: input.googleToken,
+        audience: process.env.GOOGLE_CLIENT_ID
+      });
+      payload = ticket.getPayload();
+    } catch (error) {
+      throw new AuthError("Invalid Google token", 401);
+    }
+
+    if (!payload || !payload.email) {
+      throw new AuthError("Invalid Google token payload", 401);
+    }
+
+    const email = normalizeEmail(payload.email);
+    const googleId = payload.sub;
+
+    // Check if user exists by email or googleId
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email },
+          { googleId }
+        ]
+      }
+    });
+
+    let user;
+
+    if (existingUser) {
+      // Update existing user with googleId if not already set
+      user = await prisma.user.update({
+        where: { id: existingUser.id },
+        data: {
+          googleId: existingUser.googleId || googleId
+        },
+        select: userSelect
+      });
+    } else {
+      // Create new user
+      user = await prisma.user.create({
+        data: {
+          email,
+          googleId,
+          fullName: payload.name,
+          passwordHash: "" // Empty password for Google users
+        },
+        select: userSelect
+      });
+    }
 
     return {
       user,
