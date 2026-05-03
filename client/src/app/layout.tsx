@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AppShell } from "../components/AppShell";
 import { AuthProvider } from "../components/AuthProvider";
 import { CartProvider } from "../components/CartProvider";
@@ -27,11 +28,13 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <AuthProvider>
-          <CartProvider>
-            <AppShell>{children}</AppShell>
-          </CartProvider>
-        </AuthProvider>
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
+          <AuthProvider>
+            <CartProvider>
+              <AppShell>{children}</AppShell>
+            </CartProvider>
+          </AuthProvider>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

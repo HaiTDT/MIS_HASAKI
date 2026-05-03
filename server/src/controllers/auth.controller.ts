@@ -58,5 +58,23 @@ export const authController = {
     } catch (error) {
       return handleAuthError(error, res);
     }
+  },
+
+  async registerWithGoogle(req: Request, res: Response) {
+    try {
+      const { googleToken } = req.body;
+
+      if (typeof googleToken !== "string" || !googleToken.trim()) {
+        throw new AuthError("Google token is required", 400);
+      }
+
+      const result = await authService.registerWithGoogle({
+        googleToken
+      });
+
+      return res.status(201).json(result);
+    } catch (error) {
+      return handleAuthError(error, res);
+    }
   }
 };

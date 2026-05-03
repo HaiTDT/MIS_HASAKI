@@ -208,3 +208,7 @@ Chạy tại thư mục **gốc** của dự án:
 | `npm run prisma:generate` | Tạo Prisma Client từ schema |
 | `npm run prisma:migrate` | Chạy migration cập nhật cấu trúc DB |
 | `npm run prisma:studio` | Mở Prisma Studio (quản lý DB trực quan) tại cổng `5555` |
+
+---- NEW UPDATE ---- 
+// Tạo file .env.local trong client/.env.local copy .env.example bỏ vào 
+// // Tạo file .env trong server/.env copy .env.example bỏ vào 
