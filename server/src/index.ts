@@ -17,7 +17,7 @@ import { blogRouter } from "./routes/blogs.routes";
 import { flashSaleRouter } from "./routes/flash-sale.routes";
 
 dotenv.config();
-dotenv.config({ path: path.resolve(process.cwd(), "../.env") });
+// dotenv.config({ path: path.resolve(process.cwd(), "../.env") });
 
 const app = express();
 const port = Number(process.env.PORT ?? 4000);
