@@ -1,5 +1,5 @@
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+  process.env.NEXT_PUBLIC_API_URL ?? "/api";
 
 export type Role = "CUSTOMER" | "ADMIN";
 
@@ -231,7 +231,7 @@ const toQueryString = (params: Record<string, string | number | boolean | undefi
 
 export const api = {
   login(body: { email: string; password: string }) {
-    return apiRequest<{ user: User; token: string }>("/auth/login", {
+    return apiRequest<{ user: User; token: string }>("/api/auth/login", {
       method: "POST",
       body
     });
@@ -243,7 +243,7 @@ export const api = {
     fullName?: string;
     phone?: string;
   }) {
-    return apiRequest<{ user: User; token: string }>("/auth/register", {
+    return apiRequest<{ user: User; token: string }>("/api/auth/register", {
       method: "POST",
       body
     });
