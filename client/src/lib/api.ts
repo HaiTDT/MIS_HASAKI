@@ -231,7 +231,7 @@ const toQueryString = (params: Record<string, string | number | boolean | undefi
 
 export const api = {
   login(body: { email: string; password: string }) {
-    return apiRequest<{ user: User; token: string }>("/api/auth/login", {
+    return apiRequest<{ user: User; token: string }>("/auth/login", {
       method: "POST",
       body
     });
@@ -243,7 +243,7 @@ export const api = {
     fullName?: string;
     phone?: string;
   }) {
-    return apiRequest<{ user: User; token: string }>("/api/auth/register", {
+    return apiRequest<{ user: User; token: string }>("/auth/register", {
       method: "POST",
       body
     });
@@ -257,75 +257,75 @@ export const api = {
   },
 
   getCategories() {
-    return apiRequest<Category[]>("/api/categories");
+    return apiRequest<Category[]>("/categories");
   },
 
   createCategory(body: Partial<Category>) {
-    return apiRequest<Category>("/api/categories", { method: "POST", body });
+    return apiRequest<Category>("/categories", { method: "POST", body });
   },
 
   updateCategory(id: string, body: Partial<Category>) {
-    return apiRequest<Category>(`/api/categories/${id}`, {
+    return apiRequest<Category>(`/categories/${id}`, {
       method: "PUT",
       body
     });
   },
 
   deleteCategory(id: string) {
-    return apiRequest<void>(`/api/categories/${id}`, { method: "DELETE" });
+    return apiRequest<void>(`/categories/${id}`, { method: "DELETE" });
   },
 
   getProducts(params: Record<string, string | number | boolean | undefined> = {}) {
-    return apiRequest<Paginated<Product>>(`/api/products${toQueryString(params)}`);
+    return apiRequest<Paginated<Product>>(`/products${toQueryString(params)}`);
   },
 
   getProduct(id: string) {
-    return apiRequest<Product>(`/api/products/${id}`);
+    return apiRequest<Product>(`/products/${id}`);
   },
 
   createProduct(body: Partial<Product>) {
-    return apiRequest<Product>("/api/products", { method: "POST", body });
+    return apiRequest<Product>("/products", { method: "POST", body });
   },
 
   updateProduct(id: string, body: Partial<Product>) {
-    return apiRequest<Product>(`/api/products/${id}`, { method: "PUT", body });
+    return apiRequest<Product>(`/products/${id}`, { method: "PUT", body });
   },
 
   deleteProduct(id: string) {
-    return apiRequest<void>(`/api/products/${id}`, { method: "DELETE" });
+    return apiRequest<void>(`/products/${id}`, { method: "DELETE" });
   },
 
   getProductReviews(productId: string) {
     return apiRequest<{
       data: Review[];
       meta: { averageRating: number; totalReviews: number };
-    }>(`/api/products/${productId}/reviews`);
+    }>(`/products/${productId}/reviews`);
   },
 
   createProductReview(productId: string, body: { rating: number; comment?: string }) {
-    return apiRequest(`/api/products/${productId}/reviews`, {
+    return apiRequest(`/products/${productId}/reviews`, {
       method: "POST",
       body
     });
   },
 
   getCart() {
-    return apiRequest<Cart>("/api/cart");
+    return apiRequest<Cart>("/cart");
   },
 
   addCartItem(body: { productId: string; quantity: number }) {
-    return apiRequest<Cart>("/api/cart/items", { method: "POST", body });
+    return apiRequest<Cart>("/cart/items", { method: "POST", body });
   },
 
   updateCartItem(itemId: string, body: { quantity: number }) {
-    return apiRequest<Cart>(`/api/cart/items/${itemId}`, {
+    return apiRequest<Cart>(`/cart/items/${itemId}`, {
       method: "PUT",
       body
     });
   },
 
   deleteCartItem(itemId: string) {
-    return apiRequest<Cart>(`/api/cart/items/${itemId}`, { method: "DELETE" });
+    return apiRequest<Cart>(`/cart/items/${itemId}`, { method: "DELETE" });
   },
 
   checkout(body: {
@@ -333,11 +333,11 @@ export const api = {
     shippingPhone: string;
     shippingAddress: string;
   }) {
-    return apiRequest("/api/checkout", { method: "POST", body });
+    return apiRequest("/checkout", { method: "POST", body });
   },
 
   getOrders() {
-    return apiRequest<Order[]>("/api/orders");
+    return apiRequest<Order[]>("/orders");
   },
 
   getAdminDashboard() {
@@ -352,81 +352,81 @@ export const api = {
         orderItemCount: number;
       }>;
       recentOrders: Order[];
-    }>("/api/admin/dashboard");
+    }>("/admin/dashboard");
   },
 
   getAdminOrders(params: Record<string, string | number | undefined> = {}) {
     return apiRequest<Paginated<Order>>(
-      `/api/admin/orders${toQueryString(params)}`
+      `/admin/orders${toQueryString(params)}`
     );
   },
 
   updateAdminOrderStatus(id: string, status: OrderStatus) {
-    return apiRequest<Order>(`/api/admin/orders/${id}/status`, {
+    return apiRequest<Order>(`/admin/orders/${id}/status`, {
       method: "PUT",
       body: { status }
     });
   },
 
   getBlogs(params: Record<string, string | number | boolean | undefined> = {}) {
-    return apiRequest<Paginated<Blog>>(`/api/blogs${toQueryString(params)}`);
+    return apiRequest<Paginated<Blog>>(`/blogs${toQueryString(params)}`);
   },
 
   getBlog(id: string) {
-    return apiRequest<Blog>(`/api/blogs/${id}`);
+    return apiRequest<Blog>(`/blogs/${id}`);
   },
 
   createBlog(body: Partial<Blog>) {
-    return apiRequest<Blog>("/api/blogs", { method: "POST", body });
+    return apiRequest<Blog>("/blogs", { method: "POST", body });
   },
 
   updateBlog(id: string, body: Partial<Blog>) {
-    return apiRequest<Blog>(`/api/blogs/${id}`, { method: "PUT", body });
+    return apiRequest<Blog>(`/blogs/${id}`, { method: "PUT", body });
   },
 
   deleteBlog(id: string) {
-    return apiRequest<void>(`/api/blogs/${id}`, { method: "DELETE" });
+    return apiRequest<void>(`/blogs/${id}`, { method: "DELETE" });
   },
 
   getFeaturedFlashSale() {
-    return apiRequest<FlashSaleCampaign | null>("/api/flash-sales/featured");
+    return apiRequest<FlashSaleCampaign | null>("/flash-sales/featured");
   },
 
   getAdminFlashSales() {
-    return apiRequest<FlashSaleCampaign[]>("/api/flash-sales");
+    return apiRequest<FlashSaleCampaign[]>("/flash-sales");
   },
 
   getAdminFlashSale(id: string) {
-    return apiRequest<FlashSaleCampaign>(`/api/flash-sales/${id}`);
+    return apiRequest<FlashSaleCampaign>(`/flash-sales/${id}`);
   },
 
   createFlashSale(body: Partial<FlashSaleCampaign>) {
-    return apiRequest<FlashSaleCampaign>("/api/flash-sales", {
+    return apiRequest<FlashSaleCampaign>("/flash-sales", {
       method: "POST",
       body
     });
   },
 
   updateFlashSale(id: string, body: Partial<FlashSaleCampaign>) {
-    return apiRequest<FlashSaleCampaign>(`/api/flash-sales/${id}`, {
+    return apiRequest<FlashSaleCampaign>(`/flash-sales/${id}`, {
       method: "PUT",
       body
     });
   },
 
   deleteFlashSale(id: string) {
-    return apiRequest<void>(`/api/flash-sales/${id}`, { method: "DELETE" });
+    return apiRequest<void>(`/flash-sales/${id}`, { method: "DELETE" });
   },
 
   addFlashSaleItem(campaignId: string, body: { productId: string; discountPercentage: number; stockLimit?: number }) {
-    return apiRequest<FlashSaleItem>(`/api/flash-sales/${campaignId}/items`, {
+    return apiRequest<FlashSaleItem>(`/flash-sales/${campaignId}/items`, {
       method: "POST",
       body
     });
   },
 
   removeFlashSaleItem(campaignId: string, productId: string) {
-    return apiRequest<void>(`/api/flash-sales/${campaignId}/items/${productId}`, {
+    return apiRequest<void>(`/flash-sales/${campaignId}/items/${productId}`, {
       method: "DELETE"
     });
   }
