@@ -150,7 +150,6 @@ export default function LoginPage() {
                 size="large"
                 width="100%"
                 locale="vi_VN"
-                prompt="login"
                 ux_mode="popup"
               />
             </div>
