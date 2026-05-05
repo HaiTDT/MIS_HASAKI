@@ -25,7 +25,7 @@ dotenv.config({
 
 const app = express();
 const port = Number(process.env.PORT ?? 4000);
-const clientUrl = process.env.CLIENT_URL ?? "http://localhost:3000";
+const clientUrl = (process.env.CLIENT_URL ?? "http://localhost:3000").split(",").map(url => url.trim());
 
 app.use(helmet());
 app.use(
