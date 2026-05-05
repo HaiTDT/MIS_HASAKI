@@ -18,12 +18,17 @@ import { blogRouter } from "./routes/blogs.routes";
 import { flashSaleRouter } from "./routes/flash-sale.routes";
 
 dotenv.config();
-dotenv.config({ path: path.resolve(process.cwd(), "../.env") });
+// dotenv.config({ path: path.resolve(process.cwd(), "../.env") });
 
 const app = express();
 const port = Number(process.env.PORT ?? 4000);
-const clientUrl = process.env.CLIENT_URL ?? "http://localhost:3000";
-
+const clientUrl = (
+  process.env.CLIENT_URL ??
+  "http://47.129.65.161,http://47.129.65.161:3000,http://localhost:3000"
+)
+  .split(",")
+  .map((v) => v.trim());
+  
 app.use(helmet());
 app.use(
   cors({
