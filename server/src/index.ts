@@ -17,8 +17,11 @@ import { analyticsRouter } from "./routes/analytics.routes";
 import { blogRouter } from "./routes/blogs.routes";
 import { flashSaleRouter } from "./routes/flash-sale.routes";
 
-dotenv.config();
+// dotenv.config();
 // dotenv.config({ path: path.resolve(process.cwd(), "../.env") });
+dotenv.config({
+  path: path.resolve(__dirname, "../.env"),
+});
 
 const app = express();
 const port = Number(process.env.PORT ?? 4000);
@@ -28,7 +31,7 @@ const clientUrl = (
 )
   .split(",")
   .map((v) => v.trim());
-  
+
 app.use(helmet());
 app.use(
   cors({
