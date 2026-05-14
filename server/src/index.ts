@@ -19,12 +19,15 @@ import { flashSaleRouter } from "./routes/flash-sale.routes";
 import { userRouter } from "./routes/user.routes";
 import { aiRouter } from "./routes/ai.routes";
 
-dotenv.config();
-dotenv.config({ path: path.resolve(process.cwd(), "../.env") });
+// dotenv.config();
+// dotenv.config({ path: path.resolve(process.cwd(), "../.env") });
+dotenv.config({
+  path: path.resolve(__dirname, "../.env"),
+});
 
 const app = express();
 const port = Number(process.env.PORT ?? 4000);
-const clientUrl = process.env.CLIENT_URL ?? "http://localhost:3000";
+const clientUrl = (process.env.CLIENT_URL ?? "http://localhost:3000").split(",").map(url => url.trim());
 
 app.use(helmet());
 app.use(
