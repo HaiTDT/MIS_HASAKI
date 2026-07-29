@@ -2,35 +2,31 @@ export const CATEGORY_GROUPS = [
   {
     key: 'cham-soc-da',
     label: 'Chăm sóc da',
-    categorySlugs: ['kem-chong-nang', 'mat-na', 'sua-rua-mat', 'nuoc-tay-trang', 'dau-sap-tay-trang', 'tay-trang-mat'],
+    categorySlugs: ['cham-soc-da'],
     topBrands: ["Cocoon", "La Roche-Posay", "Vichy", "Kiehl's"],
   },
   {
     key: 'trang-diem',
     label: 'Trang điểm',
-    categorySlugs: [
-      'son-kem', 'son-duong', 'son-tint-son-bong', 'trang-diem-moi',
-      'kem-nen', 'phan-nuoc-cushion', 'ma-hong', 'kem-che-khuyet-diem', 'trang-diem-mat',
-      'trang-diem-vung-mat'
-    ],
+    categorySlugs: ['trang-diem'],
     topBrands: ["Maybelline", "L'Oreal", "M.A.C", "NARS"],
   },
   {
     key: 'cham-soc-toc',
     label: 'Chăm sóc tóc',
-    categorySlugs: ['dau-goi-va-dau-xa', 'dau-xit-duong-toc'],
+    categorySlugs: ['cham-soc-toc'],
     topBrands: ["TRESemmé", "Pantene", "L'Oreal", "Dove"],
   },
   {
     key: 'cham-soc-co-the',
     label: 'Chăm sóc cơ thể',
-    categorySlugs: ['sua-tam', 'duong-the', 'cham-soc-rang-mieng'],
+    categorySlugs: ['cham-soc-co-the'],
     topBrands: ["Vaseline", "Nivea", "Dove", "P/S"],
   },
   {
     key: 'nuoc-hoa',
     label: 'Nước hoa',
-    categorySlugs: ['nuoc-hoa', 'xit-thom-toan-than'],
+    categorySlugs: ['nuoc-hoa'],
     topBrands: ["Dior", "Chanel", "Versace", "Gucci"],
   },
 ] as const;

@@ -1,6 +1,6 @@
 import cors from "cors";
 import dotenv from "dotenv";
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
@@ -20,7 +20,9 @@ import { userRouter } from "./routes/user.routes";
 import { aiRouter } from "./routes/ai.routes";
 
 dotenv.config();
-dotenv.config({ path: path.resolve(process.cwd(), "../.env") });
+// Load root .env if it exists (useful for local monorepo development)
+const rootEnvPath = path.resolve(process.cwd(), "../.env");
+dotenv.config({ path: rootEnvPath });
 
 const app = express();
 const port = Number(process.env.PORT ?? 4000);
@@ -64,6 +66,17 @@ app.use("/api/blogs", blogRouter);
 app.use("/api/flash-sales", flashSaleRouter);
 app.use("/api/user", userRouter);
 app.use("/api/ai", aiRouter);
+
+// Global Error Handler
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+  console.error("Unhandled Error:", err);
+  const status = err.statusCode || err.status || 500;
+  res.status(status).json({
+    status: "error",
+    message: err.message || "Internal server error",
+    ...(process.env.NODE_ENV !== "production" ? { stack: err.stack } : {})
+  });
+});
 
 app.listen(port, () => {
   console.log(`API server listening on http://localhost:${port}`);
